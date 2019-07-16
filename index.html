@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="site.css" />
+        <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+        <title>T.O.P. Calculator</title>
+         
+    </head>
+    <body>
+
+           <div id="calculator-container" class="center">
+              
+              <div id="calc-display" class="margin-bottom"></div>
+              <div id="buttons">
+
+              </div>
+
+           </div>
+ 
+    </body>
+
+    <script type="text/javascript">
+        
+       function operate(operator, numberOne, numberTwo)
+       {
+           if (operator == "+") {
+               return numberOne + numberTwo;
+           } else if (operator == "-")
+           {
+               return  numberOne - numberTwo;
+           } else if (operator == "*")
+           {
+               return numberOne * numberTwo;
+           } else if (operator == "/") {
+              return numberOne / numberTwo; //TODO catch div by 0
+           }
+       }
+
+       function handleButtonPress(event){
+              let buttonText = event.target.innerText;
+              let calcDisplay = document.getElementById("calc-display");
+              let curText = calcDisplay.innerText;
+              if (curText == "ERR") calcDisplay.innerText = "";
+
+              if (buttonText == "=" ) {
+               
+               //solve
+               let numbersRe = /([0-9]+)/g;
+               let operatorsRe = /([\+\-\\\*]{1})/g;
+               
+               let numbers = curText.match(numbersRe);
+               let operators = curText.match(operatorsRe);
+               
+               if (numbers.length != operators.length + 1) //catch bad input
+               { 
+                calcDisplay.innerText = "ERR";
+               } else {
+                  let result = 0;
+                  for (let i=0; i< operators.length; i++){
+                      result += operate( operators[0], Number.parseInt(numbers[0]) , Number.parseInt(numbers[1]) );
+                  }
+
+                  calcDisplay.innerText = result;
+               }
+               
+              } 
+              else if (buttonText == "C")
+              {
+               //clear everything
+               calcDisplay.innerText ="";
+              } 
+              else if (buttonText == "<--") 
+              {
+                //backspace - remove last char entered                
+                if (curText != null && curText != "")
+                   calcDisplay.innerText = curText.substr(0,curText.length-1);
+              }               
+              else
+              {
+                 //just use the button text to add to the ongoing equation                
+                 calcDisplay.innerText += buttonText;
+              }
+       }
+
+        const buttonLabels =["1","2","3","+","4","5","6","-","7","8","9","*","0",".","=","/","C","<--","",""];
+        
+        
+        let buttonContainer = document.getElementById("buttons");
+
+        //Setup the calculator buttons
+        for (let i=0; i<20;i++)
+        {
+            let calcBtnElement = document.createElement("span");
+            calcBtnElement.classList.add("calculator-button");
+            calcBtnElement.innerText = buttonLabels[i];
+            calcBtnElement.addEventListener("click", handleButtonPress);
+            buttonContainer.appendChild(calcBtnElement);
+
+
+        }
+
+       
+
+    </script>
+</html>
