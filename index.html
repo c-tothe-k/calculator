@@ -22,6 +22,11 @@
 
     <script type="text/javascript">
         
+        //This was generated using Feather
+        //https://feathericons.com/
+        //it's used for the back button
+        const backIcon = '<svg class="back-button" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>';
+
        function operate(operator, numberOne, numberTwo)
        {
            if (operator == "+") {
@@ -38,6 +43,7 @@
        }
 
        function handleButtonPress(event){
+             
               let buttonText = event.target.innerText;
               let calcDisplay = document.getElementById("calc-display");
               let curText = calcDisplay.innerText;
@@ -75,7 +81,7 @@
                //clear everything
                calcDisplay.innerText ="";
               } 
-              else if (buttonText == "<--") 
+              else if ( event.target.classList.contains("back-button") > 0 )
               {
                 //backspace - remove last char entered                
                 if (curText != null && curText != "")
@@ -84,11 +90,14 @@
               else if (buttonText != "." || (curText.indexOf(".",curText) === -1) )
               {
                  //just use the button text to add to the ongoing equation                
-                 calcDisplay.innerText += buttonText;
+                 //if the "screen" is full, don't add any more characters even if they
+                 //user keeps pressed the button
+                 if (curText.length < 9)
+                    calcDisplay.innerText += buttonText;
               }
        }
 
-        const buttonLabels =["1","2","3","+","4","5","6","-","7","8","9","*","0",".","<--","/","AC","="];
+        const buttonLabels =["1","2","3","+","4","5","6","-","7","8","9","*","0",".", backIcon ,"/","AC","="];
         
         
         let buttonContainer = document.getElementById("buttons");
@@ -103,11 +112,19 @@
             //Add special classes to 'AC' and '=' to get the two-cell span
             if (i === 16)  calcBtnElement.classList.add("last-row-eq");
             else if (i === 17)  calcBtnElement.classList.add("last-row-ac");
-            
-            calcBtnElement.innerText = buttonLabels[i];
+            else if ( i == 14 ) calcBtnElement.classList.add("back-button");
+
+            calcBtnElement.innerHTML = buttonLabels[i];
+            if ( buttonLabels[i].charCodeAt(0) >= 48 && buttonLabels[i].charCodeAt(0) <= 57 )
+            {
+                calcBtnElement.classList.add("digit");
+            } 
+            else 
+            {
+                calcBtnElement.classList.add("operator");
+            }
             calcBtnElement.addEventListener("click", handleButtonPress);
             buttonContainer.appendChild(calcBtnElement);
-
 
         }
 

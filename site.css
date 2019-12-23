@@ -27,7 +27,6 @@ body {
 .calculator-button 
 {
     font-size: 21px;
-    background-color: #444;
     color: #fff;
     border-radius: 5px;
     padding-top: 12px;
@@ -35,8 +34,16 @@ body {
 
 }
 
+.digit {
+    background-color: #444;
+}
+
+.operator {
+    background-color: orange;
+}
+
 .calculator-button:active {
-    background-color:orange;
+    background-color:lightgray;
 }
 
 #calc-display{
